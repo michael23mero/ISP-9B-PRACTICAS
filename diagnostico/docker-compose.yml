@@ -1,0 +1,35 @@
+version: '3'
+services:
+  dbmongo:
+    container_name: mymongodb
+    image: mongo
+    volumes:
+      - /home/maicol-michael/docker-db:/data/db
+    ports:
+     - 27018:27017
+    logging:
+      driver: none
+
+  backend:
+    container_name: backend
+    build: ./backend
+    environment:
+      - MONGO_URI=mongodb://dbmongo/testAll
+    volumes:
+      - ./backend:/var/www
+    ports:
+      - 4000:4000
+    depends_on:
+      - dbmongo
+      
+  frontend:
+    container_name: frontend
+    build: ./frontend
+    volumes:
+      - ./frontend:/var/www
+    ports:
+      - 3000:3000
+    stdin_open: true
+    tty: true
+    depends_on:
+      - backend
