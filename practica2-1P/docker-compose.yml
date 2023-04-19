@@ -1,0 +1,34 @@
+version: '3'
+services:
+
+  dbmongo:
+    container_name: mongodb
+    image: mongo
+    volumes:
+      - /home/maicol-michael/docker-db:/data/db
+    ports:
+     - 27018:27017
+    logging:
+      driver: none
+
+  serve:
+    container_name: serve
+    build:
+      context: .
+      dockerfile: docker/dev.dockerfile
+    environment:
+      - MONGO_URI=mongodb://dbmongo/test9B
+    volumes:
+      - ./:/var/www
+    ports:
+      - 4000:4000
+    depends_on:
+      - dbmongo
+
+  npm:
+    container_name: npm
+    build:
+      context: .
+      dockerfile: docker/npm.dockerfile
+    volumes:
+      - ./:/var/www
