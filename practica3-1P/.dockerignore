@@ -1,0 +1,12 @@
+node_modules
+
+Dockerfile
+Dockerfile.1stage
+
+.env
+.git
+
+.gitignore
+.dockerignore
+
+Readme.md
